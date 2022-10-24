@@ -1,0 +1,50 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.13'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+}
+
+group = 'com.crazykulou'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudAlibabaVersion', "2021.0.4.0")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
